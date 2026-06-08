@@ -9,17 +9,6 @@ let keys = {};
 let startTime = Date.now();
 let gameFinished = false;
 
-let machine = {
-  x: 500,
-  y: 300,
-  angle: 0,
-  speedLevel: 0,
-  width: 70,
-  height: 38
-};
-
-const speedValues = [0, 1.2, 2, 2.8, 3.6, 4.5];
-
 const rink = {
   x: 30,
   y: 30,
@@ -27,6 +16,17 @@ const rink = {
   h: canvas.height - 60,
   radius: 95
 };
+
+let machine = {
+  x: rink.x + 55,
+  y: canvas.height / 2,
+  angle: 0,
+  speedLevel: 0,
+  width: 70,
+  height: 38
+};
+
+const speedValues = [0, 1.2, 2, 2.8, 3.6, 4.5];
 
 const cleanCanvas = document.createElement("canvas");
 cleanCanvas.width = canvas.width;
@@ -43,6 +43,16 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowDown") {
     machine.speedLevel = Math.max(0, machine.speedLevel - 1);
   }
+
+  if (!e.repeat) {
+    if (e.key === "ArrowLeft") {
+      machine.angle -= Math.PI / 12;
+    }
+
+    if (e.key === "ArrowRight") {
+      machine.angle += Math.PI / 12;
+    }
+  }
 });
 
 document.addEventListener("keyup", (e) => {
@@ -52,13 +62,10 @@ document.addEventListener("keyup", (e) => {
 function update() {
   const speed = speedValues[machine.speedLevel];
 
-  if (keys["ArrowLeft"]) machine.angle -= 0.035;
-  if (keys["ArrowRight"]) machine.angle += 0.035;
-
   const nextX = machine.x + Math.cos(machine.angle) * speed;
   const nextY = machine.y + Math.sin(machine.angle) * speed;
 
-  if (isInsideRink(nextX, nextY)) {
+  if (isMachineInsideRink(nextX, nextY, machine.angle)) {
     machine.x = nextX;
     machine.y = nextY;
   } else {
@@ -99,6 +106,19 @@ function createRinkPath(context) {
   context.roundRect(rink.x, rink.y, rink.w, rink.h, rink.radius);
 }
 
+function createInnerRinkPath(context) {
+  const margin = 28;
+
+  context.beginPath();
+  context.roundRect(
+    rink.x + margin,
+    rink.y + margin,
+    rink.w - margin * 2,
+    rink.h - margin * 2,
+    rink.radius - margin
+  );
+}
+
 function drawIceRink() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -135,7 +155,6 @@ function drawRinkLines() {
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
 
-  // Mittellinie
   ctx.strokeStyle = "rgba(200, 0, 0, 0.75)";
   ctx.lineWidth = 5;
   ctx.beginPath();
@@ -143,7 +162,6 @@ function drawRinkLines() {
   ctx.lineTo(centerX, bottom);
   ctx.stroke();
 
-  // Drittellinien
   ctx.strokeStyle = "rgba(0, 80, 200, 0.75)";
   ctx.lineWidth = 5;
   ctx.beginPath();
@@ -153,7 +171,6 @@ function drawRinkLines() {
   ctx.lineTo(left + rink.w * 0.72, bottom);
   ctx.stroke();
 
-  // Torauslinien
   ctx.strokeStyle = "rgba(200, 0, 0, 0.75)";
   ctx.lineWidth = 4;
   ctx.beginPath();
@@ -163,7 +180,6 @@ function drawRinkLines() {
   ctx.lineTo(right - 70, bottom);
   ctx.stroke();
 
-  // Bullykreise
   drawFaceoffCircle(centerX, centerY, 70);
 
   drawFaceoffCircle(left + 210, top + 150, 52);
@@ -171,20 +187,14 @@ function drawRinkLines() {
   drawFaceoffCircle(right - 210, top + 150, 52);
   drawFaceoffCircle(right - 210, bottom - 150, 52);
 
-  // Bullypunkte
   drawFaceoffDot(centerX, centerY);
   drawFaceoffDot(left + 210, top + 150);
   drawFaceoffDot(left + 210, bottom - 150);
   drawFaceoffDot(right - 210, top + 150);
   drawFaceoffDot(right - 210, bottom - 150);
 
-  // Torräume
   drawGoalCrease(left + 70, centerY, "left");
   drawGoalCrease(right - 70, centerY, "right");
-
-  // Tore
-  drawGoal(left + 12, centerY, "left");
-  drawGoal(right - 12, centerY, "right");
 }
 
 function drawFaceoffCircle(x, y, radius) {
@@ -232,21 +242,6 @@ function drawGoalCrease(x, y, side) {
   ctx.stroke();
 }
 
-function drawGoal(x, y, side) {
-  ctx.strokeStyle = "rgba(180, 0, 0, 0.9)";
-  ctx.lineWidth = 5;
-
-  ctx.beginPath();
-
-  if (side === "left") {
-    ctx.rect(x - 20, y - 45, 20, 90);
-  } else {
-    ctx.rect(x, y - 45, 20, 90);
-  }
-
-  ctx.stroke();
-}
-
 function drawMachine() {
   ctx.save();
 
@@ -254,7 +249,12 @@ function drawMachine() {
   ctx.rotate(machine.angle);
 
   ctx.fillStyle = "#cc2222";
-  ctx.fillRect(-machine.width / 2, -machine.height / 2, machine.width, machine.height);
+  ctx.fillRect(
+    -machine.width / 2,
+    -machine.height / 2,
+    machine.width,
+    machine.height
+  );
 
   ctx.fillStyle = "#77cfff";
   ctx.fillRect(5, -14, 25, 28);
@@ -279,19 +279,43 @@ function cleanIce() {
   cleanCtx.rotate(machine.angle);
 
   cleanCtx.fillStyle = "rgba(160, 230, 255, 0.85)";
-  cleanCtx.fillRect(-45, -28, 90, 56);
+  cleanCtx.fillRect(-50, -20, 100, 40);
 
   cleanCtx.restore();
 }
 
-function isInsideRink(x, y) {
+function isMachineInsideRink(x, y, angle) {
+  const corners = getMachineCorners(x, y, angle);
+
   const testCanvas = document.createElement("canvas");
   testCanvas.width = canvas.width;
   testCanvas.height = canvas.height;
   const testCtx = testCanvas.getContext("2d");
 
-  createRinkPath(testCtx);
-  return testCtx.isPointInPath(x, y);
+  createInnerRinkPath(testCtx);
+
+  return corners.every((corner) => {
+    return testCtx.isPointInPath(corner.x, corner.y);
+  });
+}
+
+function getMachineCorners(x, y, angle) {
+  const halfW = machine.width / 2;
+  const halfH = machine.height / 2;
+
+  const points = [
+    { x: -halfW, y: -halfH },
+    { x: halfW, y: -halfH },
+    { x: halfW, y: halfH },
+    { x: -halfW, y: halfH }
+  ];
+
+  return points.map((p) => {
+    return {
+      x: x + p.x * Math.cos(angle) - p.y * Math.sin(angle),
+      y: y + p.x * Math.sin(angle) + p.y * Math.cos(angle)
+    };
+  });
 }
 
 function calculateCleanedPercent() {
