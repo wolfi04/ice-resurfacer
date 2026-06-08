@@ -57,14 +57,16 @@ function update() {
   const nextY = machine.y + Math.sin(machine.angle) * speed;
 
   if (isInsideRink(nextX, nextY)) {
-    if (speed > 0) {
-      machine.x = nextX;
-      machine.y = nextY;
-      cleanIce();
-    }
-  } else {
-    machine.speedLevel = 0;
+  if (speed > 0) {
+    machine.x = nextX;
+    machine.y = nextY;
+
+    updateTrail();
+    cleanIce();
   }
+} else {
+  machine.speedLevel = 0;
+}
 
   const percent = calculateCleanedPercent();
 
@@ -250,13 +252,44 @@ function drawMachine() {
   ctx.restore();
 }
 
-function getCleanerPosition() {
-  const cleanerOffset = machine.width / 2 - 5;
+let trail = [
+  { x: machine.x, y: machine.y }
+];
 
-  return {
-    x: machine.x - Math.cos(machine.angle) * cleanerOffset,
-    y: machine.y - Math.sin(machine.angle) * cleanerOffset
-  };
+function updateTrail() {
+  const last = trail[trail.length - 1];
+  const distance = Math.hypot(machine.x - last.x, machine.y - last.y);
+
+  if (distance >= 2) {
+    trail.push({ x: machine.x, y: machine.y });
+  }
+
+  if (trail.length > 300) {
+    trail.shift();
+  }
+}
+
+function getCleanerPositionFromTrail() {
+  const cleanerOffset = machine.width / 2 - 3;
+  let distanceBack = 0;
+
+  for (let i = trail.length - 1; i > 0; i--) {
+    const current = trail[i];
+    const previous = trail[i - 1];
+
+    const segmentLength = Math.hypot(
+      current.x - previous.x,
+      current.y - previous.y
+    );
+
+    distanceBack += segmentLength;
+
+    if (distanceBack >= cleanerOffset) {
+      return previous;
+    }
+  }
+
+  return trail[0];
 }
 
 function cleanIce() {
@@ -265,12 +298,13 @@ function cleanIce() {
   createRinkPath(cleanCtx);
   cleanCtx.clip();
 
-  const cleaner = getCleanerPosition();
+  const cleaner = getCleanerPositionFromTrail();
 
   cleanCtx.fillStyle = "rgba(160, 230, 255, 0.85)";
 
+  // wieder breiter wie vorher
   cleanCtx.beginPath();
-  cleanCtx.arc(cleaner.x, cleaner.y, 14, 0, Math.PI * 2);
+  cleanCtx.arc(cleaner.x, cleaner.y, 24, 0, Math.PI * 2);
   cleanCtx.fill();
 
   cleanCtx.restore();
