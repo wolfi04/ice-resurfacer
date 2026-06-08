@@ -266,8 +266,7 @@ function cleanIce() {
   cleanCtx.restore();
 }
 
-  cleanCtx.restore();
-}
+ 
 
 function isInsideRink(x, y) {
   const safety = 18;
