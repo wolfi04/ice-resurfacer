@@ -1,0 +1,16 @@
+body{
+margin:0;
+text-align:center;
+font-family:Arial,sans-serif;
+background:#1b2b3a;
+color:white;
+}
+canvas{
+background:#dff7ff;
+border:6px solid white;
+border-radius:18px;
+}
+#info{
+font-size:20px;
+margin-bottom:10px;
+}
