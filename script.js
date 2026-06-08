@@ -252,21 +252,19 @@ function cleanIce() {
   createRinkPath(cleanCtx);
   cleanCtx.clip();
 
-  // Position hinter der Maschine
-  const backX = machine.x - Math.cos(machine.angle) * 42;
-  const backY = machine.y - Math.sin(machine.angle) * 42;
-
-  cleanCtx.translate(backX, backY);
-  cleanCtx.rotate(machine.angle);
+  // Punkt direkt hinter der Maschine
+  const backX = machine.x - Math.cos(machine.angle) * 38;
+  const backY = machine.y - Math.sin(machine.angle) * 38;
 
   cleanCtx.fillStyle = "rgba(160, 230, 255, 0.85)";
 
-  // weiche, runde Spur statt hartem Rechteck
-  for (let x = -28; x <= 28; x += 7) {
-    cleanCtx.beginPath();
-    cleanCtx.arc(x, 0, 23, 0, Math.PI * 2);
-    cleanCtx.fill();
-  }
+  // runder Cleaner-Kreis statt gedrehter Fläche
+  cleanCtx.beginPath();
+  cleanCtx.arc(backX, backY, 24, 0, Math.PI * 2);
+  cleanCtx.fill();
+
+  cleanCtx.restore();
+}
 
   cleanCtx.restore();
 }
