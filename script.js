@@ -18,7 +18,7 @@ const rink = {
 };
 
 let machine = {
-  x: rink.x + 55,
+  x: rink.x + 95,
   y: canvas.height / 2,
   angle: 0,
   speedLevel: 0,
@@ -279,7 +279,9 @@ function cleanIce() {
   cleanCtx.rotate(machine.angle);
 
   cleanCtx.fillStyle = "rgba(160, 230, 255, 0.85)";
-  cleanCtx.fillRect(-50, -20, 100, 40);
+
+  // nur hinter der Maschine glätten
+  cleanCtx.fillRect(-90, -24, 60, 48);
 
   cleanCtx.restore();
 }
