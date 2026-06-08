@@ -5,7 +5,6 @@ const speedDisplay = document.getElementById("speedDisplay");
 const percentDisplay = document.getElementById("percentDisplay");
 const timerDisplay = document.getElementById("timerDisplay");
 
-let keys = {};
 let startTime = Date.now();
 let gameFinished = false;
 
@@ -18,7 +17,7 @@ const rink = {
 };
 
 let machine = {
-  x: rink.x + 95,
+  x: rink.x + 75,
   y: canvas.height / 2,
   angle: 0,
   speedLevel: 0,
@@ -34,8 +33,6 @@ cleanCanvas.height = canvas.height;
 const cleanCtx = cleanCanvas.getContext("2d");
 
 document.addEventListener("keydown", (e) => {
-  keys[e.key] = true;
-
   if (e.key === "ArrowUp") {
     machine.speedLevel = Math.min(5, machine.speedLevel + 1);
   }
@@ -44,19 +41,13 @@ document.addEventListener("keydown", (e) => {
     machine.speedLevel = Math.max(0, machine.speedLevel - 1);
   }
 
-  if (!e.repeat) {
-    if (e.key === "ArrowLeft") {
-      machine.angle -= Math.PI / 12;
-    }
-
-    if (e.key === "ArrowRight") {
-      machine.angle += Math.PI / 12;
-    }
+  if (!e.repeat && e.key === "ArrowLeft") {
+    machine.angle -= Math.PI / 12; // 15°
   }
-});
 
-document.addEventListener("keyup", (e) => {
-  keys[e.key] = false;
+  if (!e.repeat && e.key === "ArrowRight") {
+    machine.angle += Math.PI / 12; // 15°
+  }
 });
 
 function update() {
@@ -65,7 +56,7 @@ function update() {
   const nextX = machine.x + Math.cos(machine.angle) * speed;
   const nextY = machine.y + Math.sin(machine.angle) * speed;
 
-  if (isMachineInsideRink(nextX, nextY, machine.angle)) {
+  if (isInsideRink(nextX, nextY)) {
     machine.x = nextX;
     machine.y = nextY;
   } else {
@@ -106,19 +97,6 @@ function createRinkPath(context) {
   context.roundRect(rink.x, rink.y, rink.w, rink.h, rink.radius);
 }
 
-function createInnerRinkPath(context) {
-  const margin = 28;
-
-  context.beginPath();
-  context.roundRect(
-    rink.x + margin,
-    rink.y + margin,
-    rink.w - margin * 2,
-    rink.h - margin * 2,
-    rink.radius - margin
-  );
-}
-
 function drawIceRink() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -131,7 +109,6 @@ function drawIceRink() {
   ctx.clip();
 
   ctx.drawImage(cleanCanvas, 0, 0);
-
   drawRinkLines();
 
   ctx.restore();
@@ -275,49 +252,43 @@ function cleanIce() {
   createRinkPath(cleanCtx);
   cleanCtx.clip();
 
-  cleanCtx.translate(machine.x, machine.y);
+  // Position hinter der Maschine
+  const backX = machine.x - Math.cos(machine.angle) * 42;
+  const backY = machine.y - Math.sin(machine.angle) * 42;
+
+  cleanCtx.translate(backX, backY);
   cleanCtx.rotate(machine.angle);
 
   cleanCtx.fillStyle = "rgba(160, 230, 255, 0.85)";
 
-  // nur hinter der Maschine glätten
-  cleanCtx.fillRect(-90, -24, 60, 48);
+  // weiche, runde Spur statt hartem Rechteck
+  for (let x = -28; x <= 28; x += 7) {
+    cleanCtx.beginPath();
+    cleanCtx.arc(x, 0, 23, 0, Math.PI * 2);
+    cleanCtx.fill();
+  }
 
   cleanCtx.restore();
 }
 
-function isMachineInsideRink(x, y, angle) {
-  const corners = getMachineCorners(x, y, angle);
+function isInsideRink(x, y) {
+  const safety = 18;
 
   const testCanvas = document.createElement("canvas");
   testCanvas.width = canvas.width;
   testCanvas.height = canvas.height;
   const testCtx = testCanvas.getContext("2d");
 
-  createInnerRinkPath(testCtx);
+  testCtx.beginPath();
+  testCtx.roundRect(
+    rink.x + safety,
+    rink.y + safety,
+    rink.w - safety * 2,
+    rink.h - safety * 2,
+    rink.radius - safety
+  );
 
-  return corners.every((corner) => {
-    return testCtx.isPointInPath(corner.x, corner.y);
-  });
-}
-
-function getMachineCorners(x, y, angle) {
-  const halfW = machine.width / 2;
-  const halfH = machine.height / 2;
-
-  const points = [
-    { x: -halfW, y: -halfH },
-    { x: halfW, y: -halfH },
-    { x: halfW, y: halfH },
-    { x: -halfW, y: halfH }
-  ];
-
-  return points.map((p) => {
-    return {
-      x: x + p.x * Math.cos(angle) - p.y * Math.sin(angle),
-      y: y + p.x * Math.sin(angle) + p.y * Math.cos(angle)
-    };
-  });
+  return testCtx.isPointInPath(x, y);
 }
 
 function calculateCleanedPercent() {
