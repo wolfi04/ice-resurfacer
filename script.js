@@ -245,28 +245,84 @@ function drawGoalCrease(x, y, side) {
 }
 
 function drawMachine() {
+
   ctx.save();
 
   ctx.translate(machine.x, machine.y);
   ctx.rotate(machine.angle);
 
-  ctx.fillStyle = "#cc2222";
-  ctx.fillRect(
-    -machine.width / 2,
-    -machine.height / 2,
-    machine.width,
-    machine.height
+  // Hauptkörper silber
+  ctx.fillStyle = "#cfd4d8";
+
+  ctx.beginPath();
+
+  // vorne abgerundet
+  ctx.moveTo(30, -18);
+
+  ctx.quadraticCurveTo(
+    45,
+    0,
+    30,
+    18
   );
 
-  ctx.fillStyle = "#77cfff";
-  ctx.fillRect(5, -14, 25, 28);
+  ctx.lineTo(-30, 18);
+  ctx.lineTo(-35, 10);
+  ctx.lineTo(-35, -10);
+  ctx.lineTo(-30, -18);
 
-  ctx.fillStyle = "#333";
-  ctx.fillRect(30, -18, 10, 36);
+  ctx.closePath();
+  ctx.fill();
 
+  // schwarzer Rahmen
+  ctx.strokeStyle = "#333";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Fahrerkabine
+  ctx.fillStyle = "#202428";
+  ctx.fillRect(-5, -14, 24, 28);
+
+  // Scheiben
+  ctx.fillStyle = "#7fd8ff";
+  ctx.fillRect(-2, -10, 18, 20);
+
+  // Frontscheinwerfer
+  ctx.fillStyle = "#fff8aa";
+
+  ctx.beginPath();
+  ctx.arc(30, -8, 3, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(30, 8, 3, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Räder
   ctx.fillStyle = "#111";
-  ctx.fillRect(-28, -25, 20, 8);
-  ctx.fillRect(-28, 17, 20, 8);
+
+  ctx.fillRect(-22, -23, 12, 8);
+  ctx.fillRect(8, -23, 12, 8);
+
+  ctx.fillRect(-22, 15, 12, 8);
+  ctx.fillRect(8, 15, 12, 8);
+
+  // hinterer Besen / Conditioner
+  ctx.fillStyle = "#1b1b1b";
+
+  ctx.fillRect(
+    -48,
+    -26,
+    12,
+    52
+  );
+
+  // Besenborsten
+  ctx.fillStyle = "#555";
+
+  for (let y = -24; y <= 24; y += 4) {
+    ctx.fillRect(-52, y, 5, 2);
+  }
 
   ctx.restore();
 }
@@ -289,7 +345,7 @@ function updateTrail() {
 }
 
 function getCleanerPositionFromTrail() {
-  const cleanerOffset = machine.width / 2 - 3;
+  const cleanerOffset = 48;
   let distanceBack = 0;
 
   for (let i = trail.length - 1; i > 0; i--) {
