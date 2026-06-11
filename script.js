@@ -251,33 +251,42 @@ function drawMachine() {
   ctx.translate(machine.x, machine.y);
   ctx.rotate(machine.angle);
 
-  // Hauptkörper silber
-  ctx.fillStyle = "#cfd4d8";
+// Hauptkörper silber: hinten fast gerade, vorne nur Ecken abgerundet
+ctx.fillStyle = "#cfd4d8";
 
-  ctx.beginPath();
+ctx.beginPath();
 
-  // vorne abgerundet
-  ctx.moveTo(30, -18);
+// hinten links, kleine Rundung
+ctx.moveTo(-36, -14);
+ctx.quadraticCurveTo(-36, -18, -32, -18);
 
-  ctx.quadraticCurveTo(
-    45,
-    0,
-    30,
-    18
-  );
+// obere Kante
+ctx.lineTo(26, -18);
 
-  ctx.lineTo(-30, 18);
-  ctx.lineTo(-35, 10);
-  ctx.lineTo(-35, -10);
-  ctx.lineTo(-30, -18);
+// vordere obere Rundung
+ctx.quadraticCurveTo(36, -18, 36, -8);
 
-  ctx.closePath();
-  ctx.fill();
+// vordere Gerade
+ctx.lineTo(36, 8);
 
-  // schwarzer Rahmen
-  ctx.strokeStyle = "#333";
-  ctx.lineWidth = 2;
-  ctx.stroke();
+// vordere untere Rundung
+ctx.quadraticCurveTo(36, 18, 26, 18);
+
+// untere Kante
+ctx.lineTo(-32, 18);
+
+// hinten links, kleine Rundung
+ctx.quadraticCurveTo(-36, 18, -36, 14);
+
+// hintere Kante
+ctx.lineTo(-36, -14);
+
+ctx.closePath();
+ctx.fill();
+
+ctx.strokeStyle = "#333";
+ctx.lineWidth = 2;
+ctx.stroke();
 
   // Fahrerkabine
   ctx.fillStyle = "#202428";
