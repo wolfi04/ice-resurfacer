@@ -25,7 +25,7 @@ let machine = {
   height: 38
 };
 
-const speedValues = [0, 1.2, 2, 2.8, 3.6, 4.5];
+const speedValues = [0, 0.8, 1.2, 2, 2.8, 3.6];
 
 const cleanCanvas = document.createElement("canvas");
 cleanCanvas.width = canvas.width;
