@@ -8,13 +8,22 @@
 <body>
 <h1>Ice Resurfacer Challenge</h1>
 
-<div id="info">
-  Speed: <span id="speedDisplay">0</span> / 5 |
-  Ice Resurfaced: <span id="percentDisplay">0</span>% |
-  Time: <span id="timerDisplay">00:00</span>
+<div id="scoreboard">
+  <div class="scoreboard-label">TIME</div>
+  <div id="timerDisplay">00:00</div>
 </div>
 
 <canvas id="gameCanvas" width="1000" height="600"></canvas>
+
+<div id="speedPanel">
+  <div>Speed</div>
+  <div id="speedDisplay">0</div>
+  <div class="speedScale">0 1 2 3 4 5 6</div>
+</div>
+
+<div id="info">
+  Ice Resurfaced: <span id="percentDisplay">0</span>%
+</div>
 
 <p>Controls: ↑ Accelerate | ↓ Decelerate | ← Turn Left | → Turn Right</p>
 
