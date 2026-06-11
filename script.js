@@ -135,6 +135,12 @@ function drawRinkLines() {
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
 
+  const leftZoneX = left + rink.w * 0.20;
+  const rightZoneX = right - rink.w * 0.20;
+
+  const upperZoneY = top + rink.h * 0.30;
+  const lowerZoneY = bottom - rink.h * 0.30;
+
   // center line
   ctx.strokeStyle = "rgba(200, 0, 0, 0.75)";
   ctx.lineWidth = 5;
@@ -165,16 +171,15 @@ function drawRinkLines() {
 
   drawFaceoffCircle(centerX, centerY, 70);
 
-  drawFaceoffCircle(left + 210, top + 150, 52);
-  drawFaceoffCircle(left + 210, bottom - 150, 52);
-  drawFaceoffCircle(right - 210, top + 150, 52);
-  drawFaceoffCircle(right - 210, bottom - 150, 52);
-
-  drawFaceoffDot(centerX, centerY);
-  drawFaceoffDot(left + 210, top + 150);
-  drawFaceoffDot(left + 210, bottom - 150);
-  drawFaceoffDot(right - 210, top + 150);
-  drawFaceoffDot(right - 210, bottom - 150);
+  drawFaceoffCircle(leftZoneX, upperZoneY, 52);
+  drawFaceoffCircle(leftZoneX, lowerZoneY, 52);
+  drawFaceoffCircle(rightZoneX, upperZoneY, 52);
+  drawFaceoffCircle(rightZoneX, lowerZoneY, 52);
+  
+  drawFaceoffDot(leftZoneX, upperZoneY);
+  drawFaceoffDot(leftZoneX, lowerZoneY);
+  drawFaceoffDot(rightZoneX, upperZoneY);
+  drawFaceoffDot(rightZoneX, lowerZoneY);
 
   drawGoalCrease(left + 70, centerY, "left");
   drawGoalCrease(right - 70, centerY, "right");
