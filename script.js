@@ -33,19 +33,27 @@ cleanCanvas.height = canvas.height;
 const cleanCtx = cleanCanvas.getContext("2d");
 
 document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowUp") {
+  const key = e.key.toLowerCase();
+
+  const gameKeys = ["arrowup", "arrowdown", "arrowleft", "arrowright", "w", "a", "s", "d"];
+
+  if (gameKeys.includes(key)) {
+    e.preventDefault();
+  }
+
+  if (key === "arrowup" || key === "w") {
     machine.speedLevel = Math.min(5, machine.speedLevel + 1);
   }
 
-  if (e.key === "ArrowDown") {
+  if (key === "arrowdown" || key === "s") {
     machine.speedLevel = Math.max(0, machine.speedLevel - 1);
   }
 
-  if (!e.repeat && e.key === "ArrowLeft") {
+  if (!e.repeat && (key === "arrowleft" || key === "a")) {
     machine.angle -= Math.PI / 12;
   }
 
-  if (!e.repeat && e.key === "ArrowRight") {
+  if (!e.repeat && (key === "arrowright" || key === "d")) {
     machine.angle += Math.PI / 12;
   }
 });
