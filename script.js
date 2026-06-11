@@ -250,12 +250,12 @@ function drawMachine() {
   ctx.translate(machine.x, machine.y);
   ctx.rotate(machine.angle);
 
-  // Hauptkörper: silber, hinten fast gerade, vorne nur Ecken abgerundet
+  // Hauptkörper
   ctx.fillStyle = "#cfd4d8";
 
   ctx.beginPath();
 
-  // hinten oben mit kleiner Rundung
+  // hinten oben
   ctx.moveTo(-36, -14);
   ctx.quadraticCurveTo(-36, -18, -32, -18);
 
@@ -274,51 +274,21 @@ function drawMachine() {
   // untere Kante
   ctx.lineTo(-32, 18);
 
-  // hinten unten mit kleiner Rundung
+  // hinten unten
   ctx.quadraticCurveTo(-36, 18, -36, 14);
 
-  // hintere Kante
+  // Heck
   ctx.lineTo(-36, -14);
 
   ctx.closePath();
+
   ctx.fill();
 
   ctx.strokeStyle = "#333";
   ctx.lineWidth = 2;
   ctx.stroke();
 
-  // Schwarze schräge Seitenstreifen:
-  // vom seitlichen Fahrzeugrand schräg nach hinten Richtung Mitte,
-  // aber nicht bis ganz in die Mitte
-  ctx.strokeStyle = "#111";
-  ctx.lineWidth = 4;
-  ctx.lineCap = "round";
-
-  ctx.beginPath();
-
-  // obere Seite
-  ctx.moveTo(20, -15);
-  ctx.lineTo(2, -6);
-
-  ctx.moveTo(8, -15);
-  ctx.lineTo(-10, -6);
-
-  ctx.moveTo(-4, -15);
-  ctx.lineTo(-22, -6);
-
-  // untere Seite
-  ctx.moveTo(20, 15);
-  ctx.lineTo(2, 6);
-
-  ctx.moveTo(8, 15);
-  ctx.lineTo(-10, 6);
-
-  ctx.moveTo(-4, 15);
-  ctx.lineTo(-22, 6);
-
-  ctx.stroke();
-
-  // Fahrersitz hinten links
+  // Fahrersitz
   ctx.fillStyle = "#222";
   ctx.fillRect(-26, -8, 11, 14);
 
@@ -328,6 +298,7 @@ function drawMachine() {
   // Lenkrad
   ctx.strokeStyle = "#111";
   ctx.lineWidth = 2;
+
   ctx.beginPath();
   ctx.arc(-8, -3, 5, 0, Math.PI * 2);
   ctx.stroke();
@@ -353,19 +324,22 @@ function drawMachine() {
   ctx.arc(35, 10, 3, 0, Math.PI * 2);
   ctx.fill();
 
-  // Räder / Kufen
+  // Räder
   ctx.fillStyle = "#111";
+
   ctx.fillRect(-24, -24, 16, 7);
   ctx.fillRect(8, -24, 16, 7);
+
   ctx.fillRect(-24, 17, 16, 7);
   ctx.fillRect(8, 17, 16, 7);
 
-  // breiter hinterer Besen / Conditioner
+  // Conditioner / Besen
   ctx.fillStyle = "#1b1b1b";
   ctx.fillRect(-49, -30, 11, 60);
 
   // Borsten
   ctx.fillStyle = "#555";
+
   for (let y = -27; y <= 27; y += 5) {
     ctx.fillRect(-54, y, 6, 2);
   }
