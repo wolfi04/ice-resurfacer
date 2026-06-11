@@ -14,3 +14,51 @@ border-radius:18px;
 font-size:20px;
 margin-bottom:10px;
 }
+
+
+#scoreboard {
+  width: 260px;
+  margin: 10px auto 15px auto;
+  background: #111;
+  border: 5px solid #555;
+  border-radius: 12px;
+  color: #00ff88;
+  padding: 10px;
+  box-shadow: 0 0 18px rgba(0, 255, 136, 0.4);
+}
+
+.scoreboard-label {
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: #ddd;
+}
+
+#timerDisplay {
+    font-family: "Courier New", monospace;
+    font-size: 48px;
+    font-weight: bold;
+}
+
+#speedPanel {
+    width: 320px;
+    margin: 12px auto 5px auto;
+    background: #102030;
+    border: 3px solid white;
+    border-radius: 14px;
+    padding: 8px;
+    color: white;
+    font-size: 18px;
+}
+
+#speedDisplay {
+    font-size: 36px;
+    font-weight: bold;
+    color: #00d4ff;
+}
+
+.speedScale {
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    letter-spacing: 8px;
+    opacity: 0.8;
+}
