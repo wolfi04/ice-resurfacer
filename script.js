@@ -82,7 +82,10 @@ function update() {
 
   speedDisplay.textContent = machine.speedLevel;
   percentDisplay.textContent = percent;
+ if (progressBarInner) {
   progressBarInner.style.width = percent + "%";
+  progressBarInner.textContent = percent + "%";
+}
 
   if (percent >= 100 && !gameFinished) {
     gameFinished = true;
