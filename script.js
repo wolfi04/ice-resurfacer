@@ -288,13 +288,36 @@ ctx.strokeStyle = "#333";
 ctx.lineWidth = 2;
 ctx.stroke();
 
-  // Fahrerkabine
-  ctx.fillStyle = "#202428";
-  ctx.fillRect(-5, -14, 24, 28);
+// Fahrersitz
+ctx.fillStyle = "#222";
 
-  // Scheiben
-  ctx.fillStyle = "#7fd8ff";
-  ctx.fillRect(-2, -10, 18, 20);
+ctx.fillRect(
+  -24,
+  -6,
+  10,
+  12
+);
+
+// Rückenlehne
+ctx.fillRect(
+  -28,
+  -10,
+  4,
+  20
+);
+
+  ctx.strokeStyle = "#111";
+ctx.lineWidth = 2;
+
+ctx.beginPath();
+ctx.arc(
+  -10,
+  0,
+  5,
+  0,
+  Math.PI * 2
+);
+ctx.stroke();
 
   // Frontscheinwerfer
   ctx.fillStyle = "#fff8aa";
