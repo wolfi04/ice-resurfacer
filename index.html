@@ -8,11 +8,29 @@
 <body>
 <h1>Ice Resurfacer Challenge</h1>
 
-<div id="scoreboard">
-  <div class="scoreboard-label">TIME</div>
-  <div id="timerDisplay">00:00</div>
+<div id="topHud">
+
+  <div class="hudBox">
+    <div class="hudLabel">PROGRESS</div>
+    <div id="progressBarOuter">
+      <div id="progressBarInner"></div>
+    </div>
+    <div><span id="percentDisplay">0</span>%</div>
+  </div>
+
+  <div id="scoreboard">
+    <div class="scoreboardTitle">GAME CLOCK</div>
+    <div id="timerDisplay">00:00</div>
+  </div>
+
+  <div class="hudBox">
+    <div class="hudLabel">SPEED</div>
+    <div id="speedDisplay">0</div>
+  </div>
+
 </div>
 
+<canvas id="gameCanvas" width="1000" height="600"></canvas>
 <canvas id="gameCanvas" width="1000" height="600"></canvas>
 
 <div id="speedPanel">
