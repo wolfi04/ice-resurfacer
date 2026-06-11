@@ -5,6 +5,8 @@ const speedDisplay = document.getElementById("speedDisplay");
 const percentDisplay = document.getElementById("percentDisplay");
 const timerDisplay = document.getElementById("timerDisplay");
 
+const progressBarInner = document.getElementById("progressBarInner");
+
 let startTime = Date.now();
 let gameFinished = false;
 
@@ -80,6 +82,7 @@ function update() {
 
   speedDisplay.textContent = machine.speedLevel;
   percentDisplay.textContent = percent;
+  progressBarInner.style.width = percent + "%";
 
   if (percent >= 100 && !gameFinished) {
     gameFinished = true;
