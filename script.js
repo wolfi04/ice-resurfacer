@@ -245,136 +245,129 @@ function drawGoalCrease(x, y, side) {
 }
 
 function drawMachine() {
-
   ctx.save();
 
   ctx.translate(machine.x, machine.y);
   ctx.rotate(machine.angle);
 
-// Hauptkörper silber: hinten fast gerade, vorne nur Ecken abgerundet
-ctx.fillStyle = "#cfd4d8";
+  // Hauptkörper: silber, hinten fast gerade, vorne nur Ecken abgerundet
+  ctx.fillStyle = "#cfd4d8";
 
-ctx.beginPath();
+  ctx.beginPath();
 
-// hinten links, kleine Rundung
-ctx.moveTo(-36, -14);
-ctx.quadraticCurveTo(-36, -18, -32, -18);
+  // hinten oben mit kleiner Rundung
+  ctx.moveTo(-36, -14);
+  ctx.quadraticCurveTo(-36, -18, -32, -18);
 
-// obere Kante
-ctx.lineTo(26, -18);
+  // obere Kante
+  ctx.lineTo(26, -18);
 
-// vordere obere Rundung
-ctx.quadraticCurveTo(36, -18, 36, -8);
+  // vorne oben abgerundet
+  ctx.quadraticCurveTo(36, -18, 36, -8);
 
-// vordere Gerade
-ctx.lineTo(36, 8);
+  // Front
+  ctx.lineTo(36, 8);
 
-// vordere untere Rundung
-ctx.quadraticCurveTo(36, 18, 26, 18);
+  // vorne unten abgerundet
+  ctx.quadraticCurveTo(36, 18, 26, 18);
 
-// untere Kante
-ctx.lineTo(-32, 18);
+  // untere Kante
+  ctx.lineTo(-32, 18);
 
-// hinten links, kleine Rundung
-ctx.quadraticCurveTo(-36, 18, -36, 14);
+  // hinten unten mit kleiner Rundung
+  ctx.quadraticCurveTo(-36, 18, -36, 14);
 
-// hintere Kante
-ctx.lineTo(-36, -14);
+  // hintere Kante
+  ctx.lineTo(-36, -14);
 
-ctx.closePath();
-ctx.fill();
+  ctx.closePath();
+  ctx.fill();
 
-ctx.strokeStyle = "#333";
-ctx.lineWidth = 2;
-ctx.stroke();
+  ctx.strokeStyle = "#333";
+  ctx.lineWidth = 2;
+  ctx.stroke();
 
-// Fahrersitz
-ctx.fillStyle = "#222";
-
-ctx.fillRect(
-  -24,
-  -6,
-  10,
-  12
-);
-
-// Rückenlehne
-ctx.fillRect(
-  -28,
-  -10,
-  4,
-  20
-);
-
+  // Schwarze schräge Seitenstreifen:
+  // vom seitlichen Fahrzeugrand schräg nach hinten Richtung Mitte,
+  // aber nicht bis ganz in die Mitte
   ctx.strokeStyle = "#111";
-ctx.lineWidth = 2;
-
-ctx.beginPath();
-ctx.arc(
-  -10,
-  0,
-  5,
-  0,
-  Math.PI * 2
-);
-ctx.stroke();
-
-  // Frontscheinwerfer
-  ctx.fillStyle = "#fff8aa";
+  ctx.lineWidth = 4;
+  ctx.lineCap = "round";
 
   ctx.beginPath();
-  ctx.arc(30, -8, 3, 0, Math.PI * 2);
+
+  // obere Seite
+  ctx.moveTo(20, -15);
+  ctx.lineTo(2, -6);
+
+  ctx.moveTo(8, -15);
+  ctx.lineTo(-10, -6);
+
+  ctx.moveTo(-4, -15);
+  ctx.lineTo(-22, -6);
+
+  // untere Seite
+  ctx.moveTo(20, 15);
+  ctx.lineTo(2, 6);
+
+  ctx.moveTo(8, 15);
+  ctx.lineTo(-10, 6);
+
+  ctx.moveTo(-4, 15);
+  ctx.lineTo(-22, 6);
+
+  ctx.stroke();
+
+  // Fahrersitz hinten links
+  ctx.fillStyle = "#222";
+  ctx.fillRect(-26, -8, 11, 14);
+
+  // Rückenlehne
+  ctx.fillRect(-31, -11, 5, 20);
+
+  // Lenkrad
+  ctx.strokeStyle = "#111";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(-8, -3, 5, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Lenksäule
+  ctx.beginPath();
+  ctx.moveTo(-13, -2);
+  ctx.lineTo(-20, -1);
+  ctx.stroke();
+
+  // Frontgrill
+  ctx.fillStyle = "#222";
+  ctx.fillRect(31, -8, 4, 16);
+
+  // Scheinwerfer
+  ctx.fillStyle = "#fff7aa";
+
+  ctx.beginPath();
+  ctx.arc(35, -10, 3, 0, Math.PI * 2);
   ctx.fill();
 
   ctx.beginPath();
-  ctx.arc(30, 8, 3, 0, Math.PI * 2);
+  ctx.arc(35, 10, 3, 0, Math.PI * 2);
   ctx.fill();
 
-  // Schwarze Designstreifen
-ctx.fillStyle = "#222";
-
-// oberer Streifen
-ctx.beginPath();
-ctx.moveTo(-10, -12);
-ctx.lineTo(20, -12);
-ctx.lineTo(28, -6);
-ctx.lineTo(-2, -6);
-ctx.closePath();
-ctx.fill();
-
-// unterer Streifen
-ctx.beginPath();
-ctx.moveTo(-5, 6);
-ctx.lineTo(25, 6);
-ctx.lineTo(32, 12);
-ctx.lineTo(2, 12);
-ctx.closePath();
-ctx.fill();
-
-  // Räder
+  // Räder / Kufen
   ctx.fillStyle = "#111";
+  ctx.fillRect(-24, -24, 16, 7);
+  ctx.fillRect(8, -24, 16, 7);
+  ctx.fillRect(-24, 17, 16, 7);
+  ctx.fillRect(8, 17, 16, 7);
 
-  ctx.fillRect(-22, -23, 12, 8);
-  ctx.fillRect(8, -23, 12, 8);
-
-  ctx.fillRect(-22, 15, 12, 8);
-  ctx.fillRect(8, 15, 12, 8);
-
-  // hinterer Besen / Conditioner
+  // breiter hinterer Besen / Conditioner
   ctx.fillStyle = "#1b1b1b";
+  ctx.fillRect(-49, -30, 11, 60);
 
-  ctx.fillRect(
-    -48,
-    -26,
-    12,
-    52
-  );
-
-  // Besenborsten
+  // Borsten
   ctx.fillStyle = "#555";
-
-  for (let y = -24; y <= 24; y += 4) {
-    ctx.fillRect(-52, y, 5, 2);
+  for (let y = -27; y <= 27; y += 5) {
+    ctx.fillRect(-54, y, 6, 2);
   }
 
   ctx.restore();
