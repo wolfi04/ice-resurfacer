@@ -330,6 +330,27 @@ ctx.stroke();
   ctx.arc(30, 8, 3, 0, Math.PI * 2);
   ctx.fill();
 
+  // Schwarze Designstreifen
+ctx.fillStyle = "#222";
+
+// oberer Streifen
+ctx.beginPath();
+ctx.moveTo(-10, -12);
+ctx.lineTo(20, -12);
+ctx.lineTo(28, -6);
+ctx.lineTo(-2, -6);
+ctx.closePath();
+ctx.fill();
+
+// unterer Streifen
+ctx.beginPath();
+ctx.moveTo(-5, 6);
+ctx.lineTo(25, 6);
+ctx.lineTo(32, 12);
+ctx.lineTo(2, 12);
+ctx.closePath();
+ctx.fill();
+
   // Räder
   ctx.fillStyle = "#111";
 
